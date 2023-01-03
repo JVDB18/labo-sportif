@@ -24,4 +24,9 @@ public class Activite {
     public LocalDateTime setFin(LocalDateTime fin){
         return this.fin = fin;
     }
+    public String toString(){
+        String activite = " ";
+        activite = activite.format(this.nomActivite +" "+ debut.toString()+" " + fin.toString());
+        return activite;
+    }
 }

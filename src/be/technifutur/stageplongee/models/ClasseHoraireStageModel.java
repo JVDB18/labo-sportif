@@ -1,85 +1,119 @@
 package be.technifutur.stageplongee.models;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-public class ClasseHoraireStageModel extends Activite implements HoraireStageModel{
 
-@Override
-    public Activite setActivite(Activite activite, int year, int month, int day, int hour, int minute, int dureeheure, int dureeminute, String nom){
-        LocalDateTime debut = LocalDateTime.of(year, month, day, hour, minute);
-        LocalDateTime fin = debut.plusHours(dureeheure).plusMinutes(dureeminute);
-        if(isActiviteValid(debut, fin)){
-            activite.setHeureDebut(debut);
-            activite.setFin(fin);
-            activite.setNom(nom);
-        } else {
-            System.out.println("Exception");
-        }
-        return activite;
-    }
+public class ClasseHoraireStageModel implements HoraireStageModel{
+    private SortedMap<LocalDateTime, Activite> activityMap = new TreeMap<>();
+    //Transformer en ArrayList
+
     @Override
-    public void updtateActivite(List<Activite> liste, int index, int year, int month, int day, int hour, int minute, int dureeheure, int dureeminute, String nom){
-        Activite activite = liste.get(index);
-        LocalDateTime debut = LocalDateTime.of(year, month, day, hour, minute);
-        LocalDateTime fin = debut.plusHours(dureeheure).plusMinutes(dureeminute);
-        if(isActiviteValid(debut, fin)){
+    public Iterator<Activite> iterator() {
+
+        return activityMap.values().iterator();
+    }
+
+    @Override
+    public boolean addActivite(int year, int month, int day, int hour, int minute, int dureeheure, int dureeminute,
+            String nom) {
+            Activite activite = new Activite();
+            LocalDateTime debut = LocalDateTime.of(year, month, day, hour, minute);
             activite.setNom(nom);
             activite.setHeureDebut(debut);
-            activite.setFin(fin);
+            activite.setFin(debut.plusHours(dureeheure));
+            activite.setFin(debut.plusMinutes(dureeminute));
+            this.activityMap.put(debut, activite);
+
+        return true;
+    }
+
+    @Override
+    public void deleteActivite(LocalDateTime date) {
+        this.activityMap.remove(date);
+        
+    }
+
+    @Override
+    public void updtateActivite(LocalDateTime date, int year, int month, int day, int hour, int minute, int dureeheure,
+            int dureeminute, String nom) {
+        Activite activite = new Activite();
+        LocalDateTime debut = LocalDateTime.of(year, month, day, hour, minute);
+        activite.setNom(nom);
+        activite.setHeureDebut(debut);
+        activite.setFin(debut.plusHours(dureeheure));
+        activite.setFin(debut.plusHours(dureeheure));
+        if(isActiviteValid(debut, activite.getFin())){
+            this.activityMap.remove(date);
+            this.activityMap.put(debut, activite);
         } else {
-            System.out.println("Exception");
+            System.out.println("Date invalide");
         }
+        
     }
 
-    public ArrayList<Activite> setListActivite(ArrayList<Activite> liste, Activite activite){
-        liste.add(activite); 
-        return liste;
-    }
-@Override
-    public String getActivite(List<Activite> liste, int index){
-        String activite = " ";
-        String nom = liste.get(index).getNom();
-        LocalDateTime debut = liste.get(index).getHeureDebut();
-        LocalDateTime fin = liste.get(index).getFin();
-        activite = activite.format(nom +" "+ debut.toString()+" " + fin.toString());
-
-        return activite;
-    }
-@Override
-    public void deleteActivite(List<Activite> liste, int index){
-        liste.remove(index);
-    }
-@Override
-    public boolean isActiviteValid(LocalDateTime debut, LocalDateTime fin){
+    @Override
+    public boolean isActiviteValid(LocalDateTime debut, LocalDateTime fin) {
         boolean isValid = false;
         if(debut.isAfter(LocalDateTime.now()) && fin.isAfter(debut)){
             isValid = true;
         }
         return isValid;
     }
-    public static void main(String[] args) {
-      ClasseHoraireStageModel test1 = new ClasseHoraireStageModel();
-       Activite test = new Activite();
-       Activite test2 = new Activite();
-       Activite test3 = new Activite();
-       ArrayList<Activite> liste = new ArrayList<Activite>();
-       test1.setActivite(test,2022, 12, 30, 10, 30, 1, 0, "poseidon");
-       test1.setActivite(test2,2022, 12, 30, 10, 30,1, 0, "poseidon2");
-       test1.setActivite(test3,2022, 12, 30, 10, 30, 1, 0, "poseidon3");
-       test1.setListActivite(liste, test);
-       test1.setListActivite(liste, test2);
-       test1.setListActivite(liste, test3);
-       System.out.println(test1.getActivite(liste, 0));
-          for(Activite l : liste){
-           System.out.println(l.getNom() + " " + l.getHeureDebut() + " "+l.getFin() );
-          }
-       test1.deleteActivite(liste, 0);
-       test1.updtateActivite(liste, 1, 2023, 1, 1, 10, 30, 2, 30, "prout");
-       System.out.println("------------------------");
-       for(Activite l : liste){
-        System.out.println(l.getNom() + " " + l.getHeureDebut() + " "+l.getFin() );
-       }
-       
+
+    @Override
+    public String getActiviteByDate(LocalDateTime debut) {
+        return  this.activityMap.get(debut).toString();
     }
+    
+    public List<Activite> getListActivity() {
+        return new ArrayList<>(activityMap.values());  
+    }
+    
+    public static void main(String[] args) {
+        ClasseHoraireStageModel test1 = new ClasseHoraireStageModel();
+        test1.addActivite(2023, 1, 12, 12, 12, 0, 30, "toto");
+        test1.addActivite(2023, 1, 12, 17, 12, 0, 30, "toto1");
+        test1.addActivite(2023, 1, 12, 20, 12, 0, 30, "dede");
+        test1.addActivite(2023, 1, 12, 7, 12, 0, 30, "hello");
+
+        List<Activite> maliste = test1.getListActivity();
+        int index= 1;
+        for(Activite a : maliste){
+        
+            System.out.println(index++ + " : " + a);
+        }
+        System.out.println("------------------------");
+        for(Activite a : test1){
+            System.out.println(a);
+        }
+        test1.deleteActivite(LocalDateTime.parse("2023-01-12T07:12"));
+        System.out.println("----------------------------------------");
+        for(Activite a : test1){
+            System.out.println(a);
+        }
+        System.out.println("----------------------");
+        test1.updtateActivite(LocalDateTime.parse("2023-01-12T17:12"), 2023, 10, 1, 0, 0, 25, 1, "dodo");
+        for(Activite a : test1){
+            System.out.println(a);
+        }
+        System.out.println("-------------------------");
+        System.out.println(test1.getActiviteByDate(LocalDateTime.parse("2023-01-12T17:12"))); 
+        System.out.println("------------------");
+        test1.deleteActivite(maliste.get(1).getHeureDebut());
+        for(Activite a : test1){
+            System.out.println(a);
+        }
+       test1.updtateActivite(maliste.get(2).getHeureDebut(), 2023, 1, 10, 5, 50, 1, 30, "Stage1");
+       System.out.println("--------------------");
+       for(Activite a : test1){
+        System.out.println(a);
+       }
+    }
+
+
 }
