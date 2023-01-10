@@ -66,8 +66,8 @@ public class ClasseHoraireStageModel implements HoraireStageModel{
     }
 
     @Override
-    public String getActiviteByIndex(int index) {
-        return  this.activityMap.get(index).toString();
+    public Activite getActiviteByIndex(int index) {
+        return  this.activityMap.get(index);
     }
     
     // public List<Activite> getListActivity() {

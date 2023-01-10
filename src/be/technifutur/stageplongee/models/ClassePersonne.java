@@ -53,14 +53,7 @@ public class ClassePersonne implements PersonneModel {
         return true;
     }
     @Override
-    public boolean addActivite(int index, int year, int month, int day, int hour, int minute, int dureeheure, int dureeminute,
-            String nom) {
-        Activite activite = new Activite();
-        LocalDateTime debut = LocalDateTime.of(year, month, day, hour, minute);
-        activite.setNom(nom);
-        activite.setHeureDebut(debut);
-        activite.setFin(debut.plusHours(dureeheure));
-        activite.setFin(debut.plusMinutes(dureeminute));
+    public boolean addActivite(int index, Activite activite) {
         this.listePersonne.get(index).setActivite().add(activite);
         return true;
     }
@@ -80,6 +73,9 @@ public class ClassePersonne implements PersonneModel {
         this.listePersonne.add(index, personne);
         
     }
+    public Personne getPersonneById(int index){
+        return this.listePersonne.get(index);
+    }
 
     @Override
     public boolean isPersonneValid(String name, String prenom, String club) {
@@ -95,32 +91,6 @@ public class ClassePersonne implements PersonneModel {
     // public List<Personne> getListPerson() {
     //     return new ArrayList<>(listePersonne.values());  
     // }
-    public static void main(String[] args) {
-        ClassePersonne test1 = new ClassePersonne();
-        test1.addPersonne("Vanderbyse", "Thierry", "Les petits pédestres");
-        test1.addPersonne("Vanderbyse", "Julie", "Royal Moana");
-        test1.addPersonne("Anais", "Tasiaux", "Les petits pédestres");
-        test1.addActivite(1, 2023, 2, 2, 2, 2, 2, 0, "poseidon");
-        
-        for(Personne p : test1){
-            System.out.println(p);
-        }
-        System.out.println("-------------------");
-        test1.updtatePersonne(2, "Ananas", "Anais Tasiaux", "Tasiaux", "Royal Moana");
-        for(Personne p : test1){
-            System.out.println(p);
-        }
-        test1.addPersonne("Devillers", "Nicolas", "Gros nul");
-        System.out.println("-----------------");
-        for(Personne p : test1) {
-            System.out.println(p);
-        }
-        System.out.println("----------------------");
-        test1.deletePersonne(3);
-        for(Personne p : test1){
-            System.out.println(p);
-        }
-    }
 
 
 

@@ -9,7 +9,7 @@ public interface PersonneModel extends Iterable<Personne> {
     void updtatePersonne(int index, String prenom, String nom, String nouveauNom, String club);
     boolean isPersonneValid(String name, String prenom, String club);
     String getPersonneByName(String name, String prenom);
-    boolean addActivite(int index, int year, int month, int day, int hour, int minute, int dureeheure, int dureeminute, String nom);
+    boolean addActivite(int index, Activite activite);
     void deleteActivite(int index);
     void updtateActivite(int index, int year, int month, int day, int hour, int minute, int dureeheure,
     int dureeminute, String nom);

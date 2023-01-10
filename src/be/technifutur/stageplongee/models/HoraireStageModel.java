@@ -8,5 +8,5 @@ public interface HoraireStageModel extends Iterable<Activite> {
     void updtateActivite(int index, int year, int month, int day, int hour, int minute, int dureeheure,
     int dureeminute, String nom);
     boolean isActiviteValid(LocalDateTime debut, LocalDateTime fin);
-    String getActiviteByIndex(int index);
+    Activite getActiviteByIndex(int index);
 }

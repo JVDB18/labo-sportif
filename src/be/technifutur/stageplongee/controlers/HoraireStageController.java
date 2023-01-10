@@ -23,7 +23,7 @@ public class HoraireStageController{
     }
 
     public void menuAfficherHoraire()    {
-        String message = "Ajouter un stage (1), Afficher les stages (2), Modifier un horaire (3), Supprimer un horaire (4), Revenir au menu précédent (z)";
+        String message = "Ajouter un stage (1), Afficher les stages (2), Modifier un horaire (3), Supprimer un horaire (4), Revenir au menu précédent (q)";
         String menuHoraire = input.read(message);
         while(!menuHoraire.equalsIgnoreCase("q")){
             switch(menuHoraire){
@@ -42,7 +42,6 @@ public class HoraireStageController{
                 String supprimer = input.read("Selectionnez le numéro de l'horaire à supprimer");
                 listerLesHoraire();
                 stage.deleteActivite(Integer.parseInt(supprimer));
-                case "z": s.menuPrincipal();
             }
             menuHoraire = input.read(message);
 

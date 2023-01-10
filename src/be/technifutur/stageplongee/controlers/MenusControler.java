@@ -3,18 +3,21 @@ package be.technifutur.stageplongee.controlers;
 public class MenusControler {
     private Input input = new ScannerInput();
     private HoraireStageController horaire; 
-    public MenusControler( HoraireStageController horaire){
+    private PersonneControler participants;
+    public MenusControler( HoraireStageController horaire, PersonneControler personnes){
         this.horaire = horaire;
+        this.participants = personnes;
     }
 
     public MenusControler( ){
     }
-    public void setMenusControler(HoraireStageController horaire){
+    public void setMenusControler(HoraireStageController horaire, PersonneControler personnes){
         this.horaire = horaire;
+        this.participants = personnes;
     }
 
     public void menuPrincipal(){
-        String message = "Sélectionnez une action: \"Horaire(1)\", \"Inscrits(2)\", \"Nouveau Participant(3)\",\"Ajouter un stage(4)\", \"Inscrire un participant à une activité(5)\" quittez (q)";
+        String message = "Sélectionnez une action: \"Horaire(1)\", \"Inscrits(2)\", quittez (q)";
         String request = input.read(message);
         while(!request.equalsIgnoreCase("q")){
             switch(request){
@@ -26,6 +29,9 @@ public class MenusControler {
                     horaire.menuAfficherHoraire();
                     
                     break; // break is optional
+                case "2":
+                    System.out.println("Vous avez choisi l'option2");
+                    participants.menuAfficherPersonne();
                 
                     // We can have any number of case statements
                     // below is default statement, used when none of the cases is true. 
